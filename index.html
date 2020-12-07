@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab选项卡3</title>
+<style>
+    .container {
+        max-width: 800px;
+        margin:30px auto;
+        border-radius: 4px;
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
+        padding: 16px;
+    }
+    .tabs .tab-header{
+        position: relative;
+        display: flex;
+        font-size: 16px;
+        color: #303030;
+        line-height: 30px;
+        font-weight: 500;
+        border-bottom: 2px solid #ddd;
+    }
+    .tabs .tab-items{
+        margin-right: 30px;
+        /* 鼠标点上去之后有手的样式 */
+        cursor: pointer;
+        /* margin-left: -2px; */
+    }
+    .tabs .line {
+        position: absolute;
+        top: 100%;
+        transform: translateX(0);
+        width: 50px;
+        height: 2px;
+        background-color: #0676e6;
+        transition: all .3s;
+    }
+    .tabs .tab-items.active {
+        color: #0676e6;
+        /* border-bottom: 2px solid #0676e6; */
+    }
+    .tabs .tab-panel {
+        padding: 16px 0;
+        font-size: 14px;
+        display: none;
+    }
+    .tabs .tab-panel.active {
+        display: block;
+    }
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <h2>Tab选项卡1</h2>
+        <div class="tabs">
+            <div class="tab-header">
+                <span class="tab-items active">用户管理</span>
+                <span class="tab-items">配置选项</span>
+                <span class="tab-items">角色管理</span>
+                <span class="tab-items">定时任务补偿</span>
+                <span class="line"></span>
+            </div>
+            <div class="tab-content">
+                <div class="tab-panel active">用户管理</div>
+                <div class="tab-panel">配置选项</div>
+                <div class="tab-panel">角色管理</div>
+                <div class="tab-panel">定时任务补偿</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Tab选项卡2</h2>
+        <div class="tabs">
+            <div class="tab-header">
+                <span class="tab-items active">用户管理</span>
+                <span class="tab-items">配置选项</span>
+                <span class="tab-items">角色管理</span>
+                <span class="tab-items">定时任务补偿</span>
+                <span class="line"></span>
+            </div>
+            <div class="tab-content">
+                <div class="tab-panel active">用户管理</div>
+                <div class="tab-panel">配置选项</div>
+                <div class="tab-panel">角色管理</div>
+                <div class="tab-panel">定时任务补偿</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 定义函数，因为 document.querySelector 太长，之后也一直用，所以减少代码量
+        // const $ = s => document.querySelector(s)
+        // // 得到类数组对象
+        // const $$ = s => document.querySelectorAll(s)
+
+        // 封装，首先变成一个构造函数
+class Tabs {
+    constructor($container) {
+        this.$container = $container
+        this.$$tabItems = $container.querySelectorAll('.tab-items')
+        this.$$tabPanels = $container.querySelectorAll('.tab-panel')
+        this.$line = $container.querySelector('.line')
+
+        this.init()
+        this.bind()     //绑定数据
+    }
+        init() {
+        // console.log(this.$$tabItems[0].offsetWidth)
+        console.log(this.$line)
+        this.$line.style.width = this.$$tabItems[0].offsetWidth + 'px'
+      }
+            
+
+        bind() {
+            let self = this
+            this.$$tabItems.forEach($tab =>{
+            $tab.onclick = function() {
+                self.$$tabItems.forEach($tab =>$tab.classList.remove('active'))
+                //这个this 就是当前的 $tab.onclick中的$tab
+                this.classList.add('active')    
+                // console.log(this.offsetWidth)
+                // console.log(this.offsetLeft)
+                self.$line.style.width = this.offsetWidth + 'px'
+                self.$line.style.transform = `translateX(${this.offsetLeft}px)`
+
+            let index = [...self.$$tabItems].indexOf(this)
+            self.$$tabPanels.forEach($panel => $panel.classList.remove('active'))
+            self.$$tabPanels[index].classList.add('active')
+            }
+        })
+    }
+}
+        // new Tabs(document.querySelectorAll('.tabs')[0])
+        document.querySelectorAll('.tabs').forEach($container => new Tabs($container))
+
+
+
+
+    </script>
+</body>
+</html>
